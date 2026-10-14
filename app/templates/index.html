@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}Каталог · Электронды кітапхана{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+  <div>
+    <h1 class="h3 mb-1">Каталог</h1>
+    <p class="text-muted mb-0">Кітаптарды қарау, іздеу, өңдеу және жою</p>
+  </div>
+  <a href="{{ url_for('main.add_book') }}" class="btn btn-library">+ Кітап қосу</a>
+</div>
+
+<form class="row g-2 mb-4" method="get" action="{{ url_for('main.index') }}" role="search">
+  <div class="col-md-9">
+    <label for="q" class="visually-hidden">Іздеу</label>
+    <input
+      type="search"
+      class="form-control"
+      id="q"
+      name="q"
+      value="{{ query }}"
+      placeholder="Атауы, авторы немесе жанры бойынша іздеу…"
+    >
+  </div>
+  <div class="col-md-3 d-grid d-md-flex gap-2">
+    <button type="submit" class="btn btn-outline-library flex-fill">Іздеу</button>
+    {% if query %}
+      <a href="{{ url_for('main.index') }}" class="btn btn-outline-secondary flex-fill">Тазалау</a>
+    {% endif %}
+  </div>
+</form>
+
+{% if query %}
+  <p class="text-muted">
+    «<strong>{{ query }}</strong>» бойынша нәтиже: {{ books|length }}
+  </p>
+{% endif %}
+
+{% if books %}
+  <div class="table-responsive shadow-sm rounded bg-white">
+    <table class="table table-hover align-middle mb-0">
+      <thead class="table-light">
+        <tr>
+          <th scope="col">Атауы</th>
+          <th scope="col">Авторы</th>
+          <th scope="col">Жыл</th>
+          <th scope="col">Жанр</th>
+          <th scope="col" class="text-end">Әрекеттер</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for book in books %}
+          <tr>
+            <td class="fw-medium">{{ book.title }}</td>
+            <td>{{ book.author }}</td>
+            <td>{{ book.year }}</td>
+            <td><span class="badge text-bg-secondary">{{ book.genre }}</span></td>
+            <td class="text-end text-nowrap">
+              <a
+                href="{{ url_for('main.edit_book', book_id=book.id) }}"
+                class="btn btn-sm btn-outline-primary"
+              >Өңдеу</a>
+              <form
+                class="d-inline"
+                method="post"
+                action="{{ url_for('main.remove_book', book_id=book.id) }}"
+                onsubmit="return confirm('Бұл кітапты жоюға сенімдісіз бе?');"
+              >
+                <button type="submit" class="btn btn-sm btn-outline-danger">Жою</button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% else %}
+  <div class="empty-state text-center py-5 px-3 rounded">
+    {% if query %}
+      <h2 class="h5">Ештеңе табылмады</h2>
+      <p class="text-muted mb-3">Басқа сөзбен іздеп көріңіз немесе каталогты ашыңыз.</p>
+      <a href="{{ url_for('main.index') }}" class="btn btn-outline-library">Каталогқа оралу</a>
+    {% else %}
+      <h2 class="h5">Каталог бос</h2>
+      <p class="text-muted mb-3">Алғашқы кітапты қосып, кітапхананы толтырыңыз.</p>
+      <a href="{{ url_for('main.add_book') }}" class="btn btn-library">Кітап қосу</a>
+    {% endif %}
+  </div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% if mode == 'edit' %}
+  {% set page_title = 'Кітапты өңдеу' %}
+  {% set submit_label = 'Сақтау' %}
+{% else %}
+  {% set page_title = 'Кітап қосу' %}
+  {% set submit_label = 'Қосу' %}
+{% endif %}
+
+{% block title %}{{ page_title }} · Электронды кітапхана{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-7 col-xl-6">
+    <h1 class="h3 mb-1">{{ page_title }}</h1>
+    <p class="text-muted mb-4">Барлық өрістер міндетті. Жыл — бүтін сан.</p>
+
+    <form
+      method="post"
+      class="bg-white p-4 rounded shadow-sm"
+      novalidate
+      {% if mode == 'edit' %}
+        action="{{ url_for('main.edit_book', book_id=book_id) }}"
+      {% else %}
+        action="{{ url_for('main.add_book') }}"
+      {% endif %}
+    >
+      <div class="mb-3">
+        <label for="title" class="form-label">Атауы</label>
+        <input
+          type="text"
+          class="form-control"
+          id="title"
+          name="title"
+          value="{{ form_data.title }}"
+          required
+          autofocus
+        >
+      </div>
+
+      <div class="mb-3">
+        <label for="author" class="form-label">Авторы</label>
+        <input
+          type="text"
+          class="form-control"
+          id="author"
+          name="author"
+          value="{{ form_data.author }}"
+          required
+        >
+      </div>
+
+      <div class="mb-3">
+        <label for="year" class="form-label">Жыл</label>
+        <input
+          type="number"
+          class="form-control"
+          id="year"
+          name="year"
+          value="{{ form_data.year }}"
+          step="1"
+          required
+        >
+      </div>
+
+      <div class="mb-4">
+        <label for="genre" class="form-label">Жанр</label>
+        <input
+          type="text"
+          class="form-control"
+          id="genre"
+          name="genre"
+          value="{{ form_data.genre }}"
+          required
+        >
+      </div>
+
+      <div class="d-flex flex-wrap gap-2">
+        <button type="submit" class="btn btn-library">{{ submit_label }}</button>
+        <a href="{{ url_for('main.index') }}" class="btn btn-outline-secondary">Болдырмау</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

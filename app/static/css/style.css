@@ -1,0 +1,65 @@
+:root {
+  --library-green: #1b4d3e;
+  --library-green-dark: #14382e;
+  --library-accent: #c4a35a;
+  --page-bg: #f3f0e8;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background:
+    radial-gradient(circle at top left, rgba(196, 163, 90, 0.18), transparent 40%),
+    linear-gradient(180deg, #f7f4ee 0%, var(--page-bg) 100%);
+  color: #1f2a24;
+}
+
+main {
+  flex: 1;
+}
+
+.bg-library {
+  background-color: var(--library-green) !important;
+}
+
+.btn-library {
+  --bs-btn-color: #fff;
+  --bs-btn-bg: var(--library-green);
+  --bs-btn-border-color: var(--library-green);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: var(--library-green-dark);
+  --bs-btn-hover-border-color: var(--library-green-dark);
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: var(--library-green-dark);
+  --bs-btn-active-border-color: var(--library-green-dark);
+}
+
+.btn-outline-library {
+  --bs-btn-color: var(--library-green);
+  --bs-btn-border-color: var(--library-green);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: var(--library-green);
+  --bs-btn-hover-border-color: var(--library-green);
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: var(--library-green-dark);
+  --bs-btn-active-border-color: var(--library-green-dark);
+}
+
+.navbar-brand {
+  letter-spacing: 0.01em;
+}
+
+.table th {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.empty-state {
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px dashed rgba(27, 77, 62, 0.25);
+}
+
+footer {
+  background: rgba(255, 255, 255, 0.55);
+}
