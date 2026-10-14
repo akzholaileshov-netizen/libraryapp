@@ -57,6 +57,27 @@ SQLite файлы `instance/library.db` жолында автоматты түр
 └── README.md
 ```
 
+## Өндіріс / деплой
+
+Қоршаған орта айнымалылары:
+
+| Айнымалы | Сипаттама | Әдепкі |
+|----------|-----------|--------|
+| `HOST` | Тыңдау хосты | `0.0.0.0` |
+| `PORT` | Порт | `5055` |
+| `SECRET_KEY` | Flask secret | dev мәні |
+| `DATABASE_PATH` | SQLite файл жолы | `instance/library.db` |
+| `FLASK_DEBUG` | `1` болса debug | `0` |
+
+Gunicorn:
+
+```bash
+pip install -r requirements.txt
+gunicorn run:app --bind 0.0.0.0:${PORT:-5055}
+```
+
+`render.yaml` — Render Blueprint (free web service). Railway/Fly үшін `Procfile` қолданылады.
+
 ## Скриншоттар
 
 > Осы жерге скриншоттарды қосыңыз:

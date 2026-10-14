@@ -20,7 +20,9 @@ SAMPLE_BOOKS = [
 
 def get_db() -> sqlite3.Connection:
     if "db" not in g:
-        db_path = Path(current_app.root_path).parent / current_app.config["DATABASE"]
+        db_path = Path(current_app.config["DATABASE"])
+        if not db_path.is_absolute():
+            db_path = Path(current_app.root_path).parent / db_path
         db_path.parent.mkdir(parents=True, exist_ok=True)
         g.db = sqlite3.connect(db_path)
         g.db.row_factory = sqlite3.Row
