@@ -6,7 +6,7 @@
 <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
   <div>
     <h1 class="h3 mb-1">Каталог</h1>
-    <p class="text-muted mb-0">Кітаптарды қарау, іздеу, өңдеу және жою</p>
+    <p class="text-muted mb-0">Мұқабаны басып оқыңыз · іздеу, өңдеу, жою</p>
   </div>
   <a href="{{ url_for('main.add_book') }}" class="btn btn-library">+ Кітап қосу</a>
 </div>
@@ -42,6 +42,7 @@
     <table class="table table-hover align-middle mb-0">
       <thead class="table-light">
         <tr>
+          <th scope="col">Мұқаба</th>
           <th scope="col">Атауы</th>
           <th scope="col">Авторы</th>
           <th scope="col">Жыл</th>
@@ -52,11 +53,36 @@
       <tbody>
         {% for book in books %}
           <tr>
-            <td class="fw-medium">{{ book.title }}</td>
+            <td>
+              <a
+                href="{{ url_for('main.read_book', book_id=book.id) }}"
+                class="cover-link"
+                title="Оқу"
+              >
+                <img
+                  class="book-cover-thumb"
+                  src="{{ book_cover(book.cover_url) }}"
+                  alt="«{{ book.title }}» мұқабасы"
+                  loading="lazy"
+                  width="64"
+                  height="90"
+                >
+              </a>
+            </td>
+            <td>
+              <a
+                class="fw-medium text-decoration-none book-title-link"
+                href="{{ url_for('main.read_book', book_id=book.id) }}"
+              >{{ book.title }}</a>
+            </td>
             <td>{{ book.author }}</td>
             <td>{{ book.year }}</td>
             <td><span class="badge text-bg-secondary">{{ book.genre }}</span></td>
             <td class="text-end text-nowrap">
+              <a
+                href="{{ url_for('main.read_book', book_id=book.id) }}"
+                class="btn btn-sm btn-library"
+              >Оқу</a>
               <a
                 href="{{ url_for('main.edit_book', book_id=book.id) }}"
                 class="btn btn-sm btn-outline-primary"

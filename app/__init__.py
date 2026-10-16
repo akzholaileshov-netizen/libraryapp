@@ -5,7 +5,7 @@ from pathlib import Path
 
 from flask import Flask
 
-from app.db import close_db, init_db, seed_books
+from app.db import close_db, init_db, resolve_cover_url, seed_books
 from app.routes import bp
 
 
@@ -33,6 +33,7 @@ def create_app() -> Flask:
 
     app.register_blueprint(bp)
     app.teardown_appcontext(close_db)
+    app.jinja_env.globals["book_cover"] = resolve_cover_url
 
     # Кестелерді (және бос болса seed) іске қосу кезінде құру — /tmp ішінде де.
     with app.app_context():

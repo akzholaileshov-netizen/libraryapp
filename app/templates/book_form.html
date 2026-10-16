@@ -12,9 +12,11 @@
 
 {% block content %}
 <div class="row justify-content-center">
-  <div class="col-lg-7 col-xl-6">
+  <div class="col-lg-8 col-xl-7">
     <h1 class="h3 mb-1">{{ page_title }}</h1>
-    <p class="text-muted mb-4">Барлық өрістер міндетті. Жыл — бүтін сан.</p>
+    <p class="text-muted mb-4">
+      Атауы, авторы, жылы, жанры міндетті. Мұқаба мен мәтін — міндетті емес.
+    </p>
 
     <form
       method="post"
@@ -64,7 +66,7 @@
         >
       </div>
 
-      <div class="mb-4">
+      <div class="mb-3">
         <label for="genre" class="form-label">Жанр</label>
         <input
           type="text"
@@ -74,6 +76,30 @@
           value="{{ form_data.genre }}"
           required
         >
+      </div>
+
+      <div class="mb-3">
+        <label for="cover_url" class="form-label">Мұқаба (URL немесе static жолы)</label>
+        <input
+          type="text"
+          class="form-control"
+          id="cover_url"
+          name="cover_url"
+          value="{{ form_data.cover_url }}"
+          placeholder="covers/default-cover.jpg немесе https://…"
+        >
+        <div class="form-text">Бос қалдырсаңыз, әдепкі мұқаба қолданылады.</div>
+      </div>
+
+      <div class="mb-4">
+        <label for="content" class="form-label">Оқу мәтіні</label>
+        <textarea
+          class="form-control"
+          id="content"
+          name="content"
+          rows="10"
+          placeholder="Кітап мәтінін немесе үзіндіні осында жазыңыз…"
+        >{{ form_data.content }}</textarea>
       </div>
 
       <div class="d-flex flex-wrap gap-2">
