@@ -16,9 +16,11 @@ from app.db import (
     delete_book,
     get_all_books,
     get_book,
+    resolve_wiki_title,
     update_book,
 )
-from app.i18n import set_lang, t
+from app.i18n import get_lang, set_lang, t
+from app.wikipedia import fetch_wikipedia_html, wiki_page_url
 
 bp = Blueprint("main", __name__)
 
@@ -36,6 +38,9 @@ def validate_book_form(form) -> tuple[dict | None, list[str]]:
     genre_ru = (form.get("genre_ru") or "").strip()
     content_en = (form.get("content_en") or "").strip()
     content_ru = (form.get("content_ru") or "").strip()
+    wiki_kk = (form.get("wiki_kk") or "").strip()
+    wiki_en = (form.get("wiki_en") or "").strip()
+    wiki_ru = (form.get("wiki_ru") or "").strip()
 
     errors: list[str] = []
 
@@ -71,6 +76,9 @@ def validate_book_form(form) -> tuple[dict | None, list[str]]:
         "genre_ru": genre_ru,
         "content_en": content_en,
         "content_ru": content_ru,
+        "wiki_kk": wiki_kk,
+        "wiki_en": wiki_en,
+        "wiki_ru": wiki_ru,
     }, []
 
 
@@ -78,6 +86,7 @@ def _form_snapshot(form) -> dict:
     keys = (
         "title", "author", "year", "genre", "cover_url", "content",
         "title_en", "title_ru", "genre_en", "genre_ru", "content_en", "content_ru",
+        "wiki_kk", "wiki_en", "wiki_ru",
     )
     return {k: (form.get(k) or "").strip() for k in keys}
 
@@ -86,6 +95,7 @@ def _empty_form() -> dict:
     return {k: "" for k in (
         "title", "author", "year", "genre", "cover_url", "content",
         "title_en", "title_ru", "genre_en", "genre_ru", "content_en", "content_ru",
+        "wiki_kk", "wiki_en", "wiki_ru",
     )}
 
 
@@ -109,7 +119,25 @@ def read_book(book_id: int):
     if book is None:
         flash(t("flash_not_found"), "warning")
         return redirect(url_for("main.index"))
-    return render_template("reader.html", book=book)
+
+    lang = get_lang()
+    wiki_title = resolve_wiki_title(book, lang)
+    wiki_html = None
+    wiki_error = None
+    wiki_source = None
+    if wiki_title:
+        wiki_html, wiki_error = fetch_wikipedia_html(lang, wiki_title)
+        if wiki_html:
+            wiki_source = wiki_page_url(lang, wiki_title)
+
+    return render_template(
+        "reader.html",
+        book=book,
+        wiki_html=wiki_html,
+        wiki_error=wiki_error,
+        wiki_source=wiki_source,
+        wiki_title=wiki_title,
+    )
 
 
 @bp.route("/books/new", methods=["GET", "POST"])
@@ -153,6 +181,9 @@ def edit_book(book_id: int):
         "genre_ru": book["genre_ru"] if "genre_ru" in book.keys() else "",
         "content_en": book["content_en"] if "content_en" in book.keys() else "",
         "content_ru": book["content_ru"] if "content_ru" in book.keys() else "",
+        "wiki_kk": book["wiki_kk"] if "wiki_kk" in book.keys() else "",
+        "wiki_en": book["wiki_en"] if "wiki_en" in book.keys() else "",
+        "wiki_ru": book["wiki_ru"] if "wiki_ru" in book.keys() else "",
     }
 
     if request.method == "POST":

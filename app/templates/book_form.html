@@ -72,6 +72,22 @@
         <div class="form-text">{{ t('cover_help') }}</div>
       </div>
 
+
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          <label for="wiki_kk" class="form-label">{{ t('label_wiki_kk') }}</label>
+          <input type="text" class="form-control" id="wiki_kk" name="wiki_kk" value="{{ form_data.wiki_kk }}">
+        </div>
+        <div class="col-md-4 mb-3">
+          <label for="wiki_en" class="form-label">{{ t('label_wiki_en') }}</label>
+          <input type="text" class="form-control" id="wiki_en" name="wiki_en" value="{{ form_data.wiki_en }}">
+        </div>
+        <div class="col-md-4 mb-3">
+          <label for="wiki_ru" class="form-label">{{ t('label_wiki_ru') }}</label>
+          <input type="text" class="form-control" id="wiki_ru" name="wiki_ru" value="{{ form_data.wiki_ru }}">
+        </div>
+      </div>
+      <div class="form-text mb-3">{{ t('wiki_help') }}</div>
       <div class="mb-3">
         <label for="content" class="form-label">{{ t('label_content') }}</label>
         <textarea class="form-control" id="content" name="content" rows="6" placeholder="{{ t('content_placeholder') }}">{{ form_data.content }}</textarea>

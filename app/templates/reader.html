@@ -8,9 +8,16 @@
 
 {% block content %}
 <div class="reader-layout">
-  <div class="d-flex flex-wrap gap-2 mb-4">
-    <a href="{{ url_for('main.index') }}" class="btn btn-outline-secondary btn-sm">{{ t('reader_back') }}</a>
-    <a href="{{ url_for('main.edit_book', book_id=book.id) }}" class="btn btn-outline-primary btn-sm">{{ t('edit') }}</a>
+  <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
+    <div class="d-flex flex-wrap gap-2">
+      <a href="{{ url_for('main.index') }}" class="btn btn-outline-secondary btn-sm">{{ t('reader_back') }}</a>
+      <a href="{{ url_for('main.edit_book', book_id=book.id) }}" class="btn btn-outline-primary btn-sm">{{ t('edit') }}</a>
+    </div>
+    <div class="reader-toolbar d-flex align-items-center gap-2">
+      <span class="text-muted small">{{ t('font_size') }}</span>
+      <button type="button" class="btn btn-sm btn-outline-secondary" id="fontDown" aria-label="{{ t('font_smaller') }}">{{ t('font_smaller') }}</button>
+      <button type="button" class="btn btn-sm btn-outline-secondary" id="fontUp" aria-label="{{ t('font_larger') }}">{{ t('font_larger') }}</button>
+    </div>
   </div>
 
   <div class="row g-4">
@@ -27,26 +34,59 @@
         <div class="fw-medium">{{ bgenre }}</div>
         <div class="text-muted small mt-2">{{ t('col_year') }}</div>
         <div class="fw-medium">{{ book.year }}</div>
+        {% if wiki_source %}
+          <div class="mt-3 small">
+            <a href="{{ wiki_source }}" target="_blank" rel="noopener noreferrer">{{ t('wiki_source') }}</a>
+            {% if wiki_title %}<div class="text-muted">«{{ wiki_title }}»</div>{% endif %}
+          </div>
+        {% endif %}
       </div>
     </div>
     <div class="col-md-8 col-lg-9">
       <h1 class="h2 mb-1">{{ btitle }}</h1>
       <p class="text-muted mb-4">{{ book.author }}</p>
 
-      <article class="reader-body reader-page bg-white rounded shadow-sm p-4 p-md-5">
-        {% if bcontent %}
-          {% for paragraph in bcontent.splitlines() %}
-            {% if paragraph.strip() %}
-              <p>{{ paragraph }}</p>
-            {% else %}
-              <br>
-            {% endif %}
-          {% endfor %}
-        {% else %}
-          <p class="text-muted mb-0">{{ t('no_content') }}</p>
+      {% if wiki_html %}
+        <article id="readerContent" class="reader-body reader-page wiki-article bg-white rounded shadow-sm p-4 p-md-5" data-font="18">
+          {{ wiki_html|safe }}
+        </article>
+      {% else %}
+        {% if wiki_error %}
+          <div class="alert alert-warning py-2">{{ t('wiki_loading_fail') }}</div>
         {% endif %}
-      </article>
+        <div class="text-muted small mb-2">{{ t('wiki_local_fallback') }}</div>
+        <article id="readerContent" class="reader-body reader-page bg-white rounded shadow-sm p-4 p-md-5" data-font="18">
+          {% if bcontent %}
+            {% for paragraph in bcontent.splitlines() %}
+              {% if paragraph.strip() %}
+                <p>{{ paragraph }}</p>
+              {% else %}
+                <br>
+              {% endif %}
+            {% endfor %}
+          {% else %}
+            <p class="text-muted mb-0">{{ t('no_content') }}</p>
+          {% endif %}
+        </article>
+      {% endif %}
     </div>
   </div>
 </div>
+
+<script>
+(function () {
+  var el = document.getElementById('readerContent');
+  if (!el) return;
+  var size = parseInt(el.getAttribute('data-font') || '18', 10);
+  function apply() {
+    el.style.fontSize = size + 'px';
+    el.setAttribute('data-font', String(size));
+  }
+  apply();
+  var down = document.getElementById('fontDown');
+  var up = document.getElementById('fontUp');
+  if (down) down.addEventListener('click', function () { size = Math.max(14, size - 2); apply(); });
+  if (up) up.addEventListener('click', function () { size = Math.min(28, size + 2); apply(); });
+})();
+</script>
 {% endblock %}

@@ -22,6 +22,9 @@ SAMPLE_BOOKS = [
         "genre_en": "Novel",
         "genre_ru": "Роман",
         "cover_url": "covers/abai-zholy.jpg",
+        "wiki_kk": "Абай жолы",
+        "wiki_en": "Abai Qunanbaiuly",
+        "wiki_ru": "Путь Абая",
         "content": """АБАЙ ЖОЛЫ
 Мұхтар Әуезов
 
@@ -84,6 +87,9 @@ When evening fell, stars brightened above the village. Abai listened to the step
         "genre_en": "Novel",
         "genre_ru": "Роман",
         "cover_url": "covers/kan-men-ter.jpg",
+        "wiki_kk": "Қан мен тер",
+        "wiki_en": "Abdizhamil Nurpeisov",
+        "wiki_ru": "Нурпеисов, Абдижамил Каримович",
         "content": """ҚАН МЕН ТЕР
 Әбдіжәміл Нұрпейісов
 
@@ -140,6 +146,9 @@ In the evening by the fire people remember the past. Children listen. Elders sta
         "genre_en": "Historical",
         "genre_ru": "Исторический",
         "cover_url": "covers/koshpendiler.jpg",
+        "wiki_kk": "Көшпенділер",
+        "wiki_en": "Ilyas Yesenberlin",
+        "wiki_ru": "Кочевники (трилогия)",
         "content": """КӨШПЕНДІЛЕР
 Ілияс Есенберлин
 
@@ -196,6 +205,9 @@ At night by the fire a singer performs. Fire shines in the listeners' eyes. Thro
         "genre_en": "Publicism",
         "genre_ru": "Публицистика",
         "cover_url": "covers/oyan-kazak.jpg",
+        "wiki_kk": "Міржақып Дулатұлы",
+        "wiki_en": "Mirjaqip Dulatuli",
+        "wiki_ru": "Дулатов, Миржакип",
         "content": """ОЯН, ҚАЗАҚ!
 Міржақып Дулатұлы
 
@@ -273,6 +285,9 @@ Become a model for the next generation.
         "genre_en": "Children's literature",
         "genre_ru": "Детская литература",
         "cover_url": "covers/menin-atym-kozha.jpg",
+        "wiki_kk": "Менің атым Қожа",
+        "wiki_en": "Berdibek Soqpaqbaev",
+        "wiki_ru": "Меня зовут Кожа",
         "content": """МЕНІҢ АТЫМ ҚОЖА
 Бердібек Соқпақбаев
 
@@ -332,6 +347,12 @@ I18N_COLUMNS = (
     "content_ru",
 )
 
+WIKI_COLUMNS = (
+    "wiki_kk",
+    "wiki_en",
+    "wiki_ru",
+)
+
 
 def get_db() -> sqlite3.Connection:
     if "db" not in g:
@@ -374,12 +395,15 @@ def init_db() -> None:
             content TEXT NOT NULL DEFAULT '',
             content_en TEXT NOT NULL DEFAULT '',
             content_ru TEXT NOT NULL DEFAULT '',
+            wiki_kk TEXT NOT NULL DEFAULT '',
+            wiki_en TEXT NOT NULL DEFAULT '',
+            wiki_ru TEXT NOT NULL DEFAULT '',
             created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
         )
         """
     )
     cols = _column_names(db)
-    for col in ("cover_url", "content", *I18N_COLUMNS):
+    for col in ("cover_url", "content", *I18N_COLUMNS, *WIKI_COLUMNS):
         if col not in cols:
             db.execute(
                 f"ALTER TABLE books ADD COLUMN {col} TEXT NOT NULL DEFAULT ''"
@@ -396,11 +420,13 @@ def seed_books() -> None:
             INSERT INTO books (
                 title, title_en, title_ru, author, year,
                 genre, genre_en, genre_ru, cover_url,
-                content, content_en, content_ru
+                content, content_en, content_ru,
+                wiki_kk, wiki_en, wiki_ru
             ) VALUES (
                 :title, :title_en, :title_ru, :author, :year,
                 :genre, :genre_en, :genre_ru, :cover_url,
-                :content, :content_en, :content_ru
+                :content, :content_en, :content_ru,
+                :wiki_kk, :wiki_en, :wiki_ru
             )
             """,
             SAMPLE_BOOKS,
@@ -426,6 +452,9 @@ def seed_books() -> None:
             "genre_ru",
             "content_en",
             "content_ru",
+            "wiki_kk",
+            "wiki_en",
+            "wiki_ru",
         ):
             current = (row[key] if key in row.keys() else "") or ""
             if not str(current).strip():
@@ -489,6 +518,9 @@ def create_book(
     genre_ru: str = "",
     content_en: str = "",
     content_ru: str = "",
+    wiki_kk: str = "",
+    wiki_en: str = "",
+    wiki_ru: str = "",
 ) -> int:
     db = get_db()
     cover = (cover_url or "").strip() or DEFAULT_COVER
@@ -498,8 +530,9 @@ def create_book(
         INSERT INTO books (
             title, title_en, title_ru, author, year,
             genre, genre_en, genre_ru, cover_url,
-            content, content_en, content_ru
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            content, content_en, content_ru,
+            wiki_kk, wiki_en, wiki_ru
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """,
         (
             title,
@@ -514,6 +547,9 @@ def create_book(
             body,
             (content_en or "").strip(),
             (content_ru or "").strip(),
+            (wiki_kk or "").strip(),
+            (wiki_en or "").strip(),
+            (wiki_ru or "").strip(),
         ),
     )
     db.commit()
@@ -534,6 +570,9 @@ def update_book(
     genre_ru: str = "",
     content_en: str = "",
     content_ru: str = "",
+    wiki_kk: str = "",
+    wiki_en: str = "",
+    wiki_ru: str = "",
 ) -> bool:
     db = get_db()
     existing = get_book(book_id)
@@ -548,7 +587,8 @@ def update_book(
             author = ?, year = ?,
             genre = ?, genre_en = ?, genre_ru = ?,
             cover_url = ?,
-            content = ?, content_en = ?, content_ru = ?
+            content = ?, content_en = ?, content_ru = ?,
+            wiki_kk = ?, wiki_en = ?, wiki_ru = ?
         WHERE id = ?
         """,
         (
@@ -564,6 +604,9 @@ def update_book(
             body,
             (content_en or "").strip(),
             (content_ru or "").strip(),
+            (wiki_kk or "").strip(),
+            (wiki_en or "").strip(),
+            (wiki_ru or "").strip(),
             book_id,
         ),
     )
@@ -576,3 +619,17 @@ def delete_book(book_id: int) -> bool:
     cur = db.execute("DELETE FROM books WHERE id = ?", (book_id,))
     db.commit()
     return cur.rowcount > 0
+
+
+def resolve_wiki_title(book, lang: str) -> str:
+    """Тілге сай Wikipedia мақала атауы."""
+    lang = (lang or "kk").lower()
+    col = f"wiki_{lang}"
+    if col in book.keys() and (book[col] or "").strip():
+        return book[col].strip()
+    # fallback: localized book title
+    if lang == "en" and (book["title_en"] or "").strip():
+        return book["title_en"].strip()
+    if lang == "ru" and (book["title_ru"] or "").strip():
+        return book["title_ru"].strip()
+    return (book["title"] or "").strip()
