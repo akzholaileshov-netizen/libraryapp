@@ -109,3 +109,17 @@ footer {
 .reader-body p {
   margin-bottom: 0.85rem;
 }
+
+
+.lang-switcher .btn {
+  min-width: 2.4rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.reader-page {
+  max-width: 42rem;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.125rem;
+  line-height: 1.85;
+}

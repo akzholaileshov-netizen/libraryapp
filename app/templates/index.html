@@ -1,39 +1,45 @@
 {% extends "base.html" %}
 
-{% block title %}Каталог · Электронды кітапхана{% endblock %}
+{% block title %}{{ t('catalog_title') }} · {{ t('app_name') }}{% endblock %}
 
 {% block content %}
 <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
   <div>
-    <h1 class="h3 mb-1">Каталог</h1>
-    <p class="text-muted mb-0">Мұқабаны басып оқыңыз · іздеу, өңдеу, жою</p>
+    <h1 class="h3 mb-1">{{ t('catalog_title') }}</h1>
+    <p class="text-muted mb-0">{{ t('catalog_subtitle') }}</p>
   </div>
-  <a href="{{ url_for('main.add_book') }}" class="btn btn-library">+ Кітап қосу</a>
+  <a href="{{ url_for('main.add_book') }}" class="btn btn-library">{{ t('add_book_btn') }}</a>
 </div>
 
 <form class="row g-2 mb-4" method="get" action="{{ url_for('main.index') }}" role="search">
   <div class="col-md-9">
-    <label for="q" class="visually-hidden">Іздеу</label>
+    <label for="q" class="visually-hidden">{{ t('search') }}</label>
     <input
       type="search"
       class="form-control"
       id="q"
       name="q"
       value="{{ query }}"
-      placeholder="Атауы, авторы немесе жанры бойынша іздеу…"
+      placeholder="{{ t('search_placeholder') }}"
     >
   </div>
   <div class="col-md-3 d-grid d-md-flex gap-2">
-    <button type="submit" class="btn btn-outline-library flex-fill">Іздеу</button>
+    <button type="submit" class="btn btn-outline-library flex-fill">{{ t('search') }}</button>
     {% if query %}
-      <a href="{{ url_for('main.index') }}" class="btn btn-outline-secondary flex-fill">Тазалау</a>
+      <a href="{{ url_for('main.index') }}" class="btn btn-outline-secondary flex-fill">{{ t('clear') }}</a>
     {% endif %}
   </div>
 </form>
 
 {% if query %}
   <p class="text-muted">
-    «<strong>{{ query }}</strong>» бойынша нәтиже: {{ books|length }}
+    {% if get_lang() == 'en' %}
+      {{ books|length }} {{ t('search_results') }} «<strong>{{ query }}</strong>»
+    {% elif get_lang() == 'ru' %}
+      {{ books|length }} {{ t('search_results') }} «<strong>{{ query }}</strong>»
+    {% else %}
+      «<strong>{{ query }}</strong>» {{ t('search_results') }}: {{ books|length }}
+    {% endif %}
   </p>
 {% endif %}
 
@@ -42,27 +48,29 @@
     <table class="table table-hover align-middle mb-0">
       <thead class="table-light">
         <tr>
-          <th scope="col">Мұқаба</th>
-          <th scope="col">Атауы</th>
-          <th scope="col">Авторы</th>
-          <th scope="col">Жыл</th>
-          <th scope="col">Жанр</th>
-          <th scope="col" class="text-end">Әрекеттер</th>
+          <th scope="col">{{ t('col_cover') }}</th>
+          <th scope="col">{{ t('col_title') }}</th>
+          <th scope="col">{{ t('col_author') }}</th>
+          <th scope="col">{{ t('col_year') }}</th>
+          <th scope="col">{{ t('col_genre') }}</th>
+          <th scope="col" class="text-end">{{ t('col_actions') }}</th>
         </tr>
       </thead>
       <tbody>
         {% for book in books %}
+          {% set btitle = book_field(book, 'title') %}
+          {% set bgenre = book_field(book, 'genre') %}
           <tr>
             <td>
               <a
                 href="{{ url_for('main.read_book', book_id=book.id) }}"
                 class="cover-link"
-                title="Оқу"
+                title="{{ t('read') }}"
               >
                 <img
                   class="book-cover-thumb"
                   src="{{ book_cover(book.cover_url) }}"
-                  alt="«{{ book.title }}» мұқабасы"
+                  alt="«{{ btitle }}» {{ t('cover_alt') }}"
                   loading="lazy"
                   width="64"
                   height="90"
@@ -73,27 +81,27 @@
               <a
                 class="fw-medium text-decoration-none book-title-link"
                 href="{{ url_for('main.read_book', book_id=book.id) }}"
-              >{{ book.title }}</a>
+              >{{ btitle }}</a>
             </td>
             <td>{{ book.author }}</td>
             <td>{{ book.year }}</td>
-            <td><span class="badge text-bg-secondary">{{ book.genre }}</span></td>
+            <td><span class="badge text-bg-secondary">{{ bgenre }}</span></td>
             <td class="text-end text-nowrap">
               <a
                 href="{{ url_for('main.read_book', book_id=book.id) }}"
                 class="btn btn-sm btn-library"
-              >Оқу</a>
+              >{{ t('read') }}</a>
               <a
                 href="{{ url_for('main.edit_book', book_id=book.id) }}"
                 class="btn btn-sm btn-outline-primary"
-              >Өңдеу</a>
+              >{{ t('edit') }}</a>
               <form
                 class="d-inline"
                 method="post"
                 action="{{ url_for('main.remove_book', book_id=book.id) }}"
-                onsubmit="return confirm('Бұл кітапты жоюға сенімдісіз бе?');"
+                onsubmit="return confirm('{{ t('delete_confirm') }}');"
               >
-                <button type="submit" class="btn btn-sm btn-outline-danger">Жою</button>
+                <button type="submit" class="btn btn-sm btn-outline-danger">{{ t('delete') }}</button>
               </form>
             </td>
           </tr>
@@ -104,13 +112,13 @@
 {% else %}
   <div class="empty-state text-center py-5 px-3 rounded">
     {% if query %}
-      <h2 class="h5">Ештеңе табылмады</h2>
-      <p class="text-muted mb-3">Басқа сөзбен іздеп көріңіз немесе каталогты ашыңыз.</p>
-      <a href="{{ url_for('main.index') }}" class="btn btn-outline-library">Каталогқа оралу</a>
+      <h2 class="h5">{{ t('empty_search_title') }}</h2>
+      <p class="text-muted mb-3">{{ t('empty_search_hint') }}</p>
+      <a href="{{ url_for('main.index') }}" class="btn btn-outline-library">{{ t('back_catalog') }}</a>
     {% else %}
-      <h2 class="h5">Каталог бос</h2>
-      <p class="text-muted mb-3">Алғашқы кітапты қосып, кітапхананы толтырыңыз.</p>
-      <a href="{{ url_for('main.add_book') }}" class="btn btn-library">Кітап қосу</a>
+      <h2 class="h5">{{ t('empty_catalog_title') }}</h2>
+      <p class="text-muted mb-3">{{ t('empty_catalog_hint') }}</p>
+      <a href="{{ url_for('main.add_book') }}" class="btn btn-library">{{ t('add_book_btn') }}</a>
     {% endif %}
   </div>
 {% endif %}

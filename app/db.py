@@ -9,14 +9,18 @@ from typing import Any
 from flask import current_app, g, url_for
 
 
-# Мұқабалар: Wikimedia Commons (PD / CC) — жергілікті көшірме app/static/covers/
-# Мәтін: оқуға арналған үзінділер (көркем шығармалардың толық мәтіні емес).
+# Мұқабалар: Wikimedia Commons (PD / CC) — app/static/covers/
+# Мәтін: көптілді оқу үзінділері (демо).
 SAMPLE_BOOKS = [
     {
         "title": "Абай жолы",
+        "title_en": "The Path of Abai",
+        "title_ru": "Путь Абая",
         "author": "Мұхтар Әуезов",
         "year": 1942,
         "genre": "Роман",
+        "genre_en": "Novel",
+        "genre_ru": "Роман",
         "cover_url": "covers/abai-zholy.jpg",
         "content": """АБАЙ ЖОЛЫ
 Мұхтар Әуезов
@@ -35,12 +39,50 @@ SAMPLE_BOOKS = [
 
 (Бұл үзінді — кітапхана демосы үшін қысқартылған оқу мәтіні.)
 """,
+        "content_en": """THE PATH OF ABAI
+Mukhtar Auezov
+
+— Reading excerpt (demo) —
+
+On a cool autumn day the village at the foot of Shyngystau lay quiet. Morning dew silvered the grass, and distant ridges were wrapped in blue mist. Young Abai stepped into the yard and looked far away.
+
+His father Kunanbai's house stood in the middle of the aul. Horses waited at the entrance; people spoke softly outside. In Abai's heart curiosity and doubt mixed: "Who will I become? Where is my path?"
+
+Later that boy's path turned toward knowledge, justice, and service to the people. Abai learned the power of the word: a weapon, a remedy, and a light.
+
+In youth he measured friendships, sorrow, and joy with his heart. Every event pushed him to think deeper. Humanity, learning, and labor became his compass.
+
+When evening fell, stars brightened above the village. Abai listened to the steppe and repeated lines of verse within himself. In that moment he felt his path clearly: to reach the heart of his people.
+
+(This excerpt is a shortened demo text for the library app.)
+""",
+        "content_ru": """ПУТЬ АБАЯ
+Мухтар Ауэзов
+
+— Отрывок для чтения (демо) —
+
+В прохладный осенний день аул у подножия Чингистау лежал тихо. Утренняя роса серебрила траву, а дальние хребты окутывал голубой туман. Юный Абай вышел во двор и посмотрел вдаль.
+
+Дом отца Кунанбая стоял в центре аула. У входа стояли кони, снаружи люди говорили тихо. В сердце Абая смешались сомнение и жажда: «Кем я стану? Где мой путь?»
+
+Позже путь того мальчика повернул к знанию, справедливости и служению народу. Абай понял силу слова: это и оружие, и лекарство, и свет.
+
+В юности он мерил дружбу, печаль и радость сердцем. Каждое событие вело его к более глубокой мысли. Человечность, учение и труд стали его компасом.
+
+Когда сгущался вечер, над аулом зажигались звёзды. Абай слушал голос степи и повторял строки стихов про себя. В тот миг он ясно почувствовал свой путь: найти дорогу к сердцу народа.
+
+(Это сокращённый демо-текст для библиотеки.)
+""",
     },
     {
         "title": "Қан мен тер",
+        "title_en": "Blood and Sweat",
+        "title_ru": "Кровь и пот",
         "author": "Әбдіжәміл Нұрпейісов",
         "year": 1970,
         "genre": "Роман",
+        "genre_en": "Novel",
+        "genre_ru": "Роман",
         "cover_url": "covers/kan-men-ter.jpg",
         "content": """ҚАН МЕН ТЕР
 Әбдіжәміл Нұрпейісов
@@ -57,12 +99,46 @@ SAMPLE_BOOKS = [
 
 (Бұл үзінді — кітапхана демосы үшін қысқартылған оқу мәтіні.)
 """,
+        "content_en": """BLOOD AND SWEAT
+Abdizhamil Nurpeisov
+
+— Reading excerpt (demo) —
+
+The wind was strong on the Aral shore. Waves licked the sand, and boatmen's voices carried from afar. Life was tied to the sea: fish, salt, sweat, struggle.
+
+Elaman came to the shore at sunrise. His net was heavy, his shoulders tired. Still he would not stop. "A person's strength is in labor," he repeated to himself.
+
+In the village talk was endless: someone's hope, someone's grief. Between war and peace, human fate shows clearly here. Days of blood and days of sweat are pages of one history.
+
+In the evening by the fire people remember the past. Children listen. Elders stay silent. The sea's murmur does not pause.
+
+(This excerpt is a shortened demo text for the library app.)
+""",
+        "content_ru": """КРОВЬ И ПОТ
+Абдижамил Нурпеисов
+
+— Отрывок для чтения (демо) —
+
+На берегу Арала дул сильный ветер. Волны лизали песок, голоса рыбаков доносились издалека. Жизнь была связана с морем: рыба, соль, пот, борьба.
+
+Еламан вышел к берегу на рассвете. Сеть была тяжёлой, плечи устали. Но он не умел останавливаться. «Сила человека — в труде», — повторял он про себя.
+
+В ауле много разговоров: чья-то надежда, чья-то печаль. Между войной и миром здесь ясно видна судьба человека. Дни крови и дни пота — страницы одной истории.
+
+Вечером у огня люди вспоминают прошлое. Дети слушают. Старики молчат. Шум моря не умолкает.
+
+(Это сокращённый демо-текст для библиотеки.)
+""",
     },
     {
         "title": "Көшпенділер",
+        "title_en": "The Nomads",
+        "title_ru": "Кочевники",
         "author": "Ілияс Есенберлин",
         "year": 1969,
         "genre": "Тарихи",
+        "genre_en": "Historical",
+        "genre_ru": "Исторический",
         "cover_url": "covers/koshpendiler.jpg",
         "content": """КӨШПЕНДІЛЕР
 Ілияс Есенберлин
@@ -79,12 +155,46 @@ SAMPLE_BOOKS = [
 
 (Бұл үзінді — кітапхана демосы үшін қысқартылған оқу мәтіні.)
 """,
+        "content_en": """THE NOMADS
+Ilyas Yesenberlin
+
+— Reading excerpt (demo) —
+
+The great steppe is an endless horizon. Smoke from yurts rises, and the neighing of horses carries far. This is the home of nomads, the home of freedom.
+
+In the khan's camp a council is underway. Some speak of war, others of peace. A young batyr's heart pounds like a storm: no treasure is greater than the unity of the people.
+
+Migration routes are the roots of history. Every camp, every battle, every song keeps the people's memory. The law of the steppe is stern, yet it strives to be just.
+
+At night by the fire a singer performs. Fire shines in the listeners' eyes. Through that song past heroes seem to live again.
+
+(This excerpt is a shortened demo text for the library app.)
+""",
+        "content_ru": """КОЧЕВНИКИ
+Ильяс Есенберлин
+
+— Отрывок для чтения (демо) —
+
+Великая степь — бесконечный горизонт. Дым юрт поднимается к небу, ржание коней разносится далеко. Это край кочевников, край свободы.
+
+В ханской орде идёт совет. Одни говорят о войне, другие о мире. Сердце юного батыра бьётся бурей: нет сокровища дороже единства народа.
+
+Пути кочевий — корни истории. Каждый стан, каждая битва, каждая песнь хранят память народа. Закон степи суров, но стремится быть справедливым.
+
+Ночью у огня жырши поёт. В глазах слушателей горит огонь. Через ту песнь оживают батыры прошлого.
+
+(Это сокращённый демо-текст для библиотеки.)
+""",
     },
     {
         "title": "Оян, қазақ!",
+        "title_en": "Wake Up, Kazakh!",
+        "title_ru": "Проснись, казах!",
         "author": "Міржақып Дулатұлы",
         "year": 1909,
         "genre": "Публицистика",
+        "genre_en": "Publicism",
+        "genre_ru": "Публицистика",
         "cover_url": "covers/oyan-kazak.jpg",
         "content": """ОЯН, ҚАЗАҚ!
 Міржақып Дулатұлы
@@ -108,12 +218,60 @@ SAMPLE_BOOKS = [
 
 (1909 жылғы шығарма идеясына сүйенген қысқа оқу мәтіні; демо үшін.)
 """,
+        "content_en": """WAKE UP, KAZAKH!
+Mirjaqip Dulatuly
+
+— Reading excerpt (demo) —
+
+Wake up, Kazakh, open your eyes —
+How long will darkness remain?
+Land, faith, and herds were lost —
+Why sit and wait now?
+
+Knowledge is light; ignorance is night.
+Read books, work, seek.
+Love your language and your history —
+The road to the future is here.
+
+Kinfolk, let unity stand among you;
+Beware of laziness and alien ways.
+Those who labor for the people
+Become a model for the next generation.
+
+(A short demo text inspired by the 1909 work.)
+""",
+        "content_ru": """ПРОСНИСЬ, КАЗАХ!
+Миржакып Дулатов
+
+— Отрывок для чтения (демо) —
+
+Проснись, казах, открой глаза —
+Доколе тьма господствует?
+Земля ушла, вера ушла, скот ушёл —
+Чего же ты ждёшь теперь?
+
+Знание — свет, невежество — ночь.
+Читай книги, трудись, ищи.
+Люби свой язык и свою историю —
+Путь в будущее здесь.
+
+Братья, пусть будет единство между вами;
+Берегитесь лени и чуждого.
+Кто трудится для народа —
+Тот пример для потомков.
+
+(Краткий демо-текст по мотивам произведения 1909 года.)
+""",
     },
     {
         "title": "Менің атым Қожа",
+        "title_en": "My Name Is Kozha",
+        "title_ru": "Меня зовут Кожа",
         "author": "Бердібек Соқпақбаев",
         "year": 1957,
         "genre": "Балалар әдебиеті",
+        "genre_en": "Children's literature",
+        "genre_ru": "Детская литература",
         "cover_url": "covers/menin-atym-kozha.jpg",
         "content": """МЕНІҢ АТЫМ ҚОЖА
 Бердібек Соқпақбаев
@@ -130,10 +288,49 @@ SAMPLE_BOOKS = [
 
 (Бұл үзінді — кітапхана демосы үшін қысқартылған оқу мәтіні.)
 """,
+        "content_en": """MY NAME IS KOZHA
+Berdibek Sokpakbaev
+
+— Reading excerpt (demo) —
+
+My name is Kozha. I am still little, but I go to school. Lessons are interesting and hard. The teacher smiles, friends chatter, and sometimes I go too far.
+
+One day I decided to become a "good student." But the next morning everything went wrong: I forgot homework and talked in class. I felt ashamed.
+
+In the evening I told my mother. She said: "Kozha, people make mistakes. Admitting them and fixing them is bravery." Those words stayed in my heart.
+
+The next day I went to the board and answered slowly but clearly. The class grew quiet. In that moment I felt myself changing.
+
+(This excerpt is a shortened demo text for the library app.)
+""",
+        "content_ru": """МЕНЯ ЗОВУТ КОЖА
+Бердибек Сокпакбаев
+
+— Отрывок для чтения (демо) —
+
+Меня зовут Кожа. Я ещё маленький, но уже хожу в школу. Уроки интересные и трудные. Учитель улыбается, друзья шумят, а я иногда захожу слишком далеко.
+
+Однажды я решил стать «хорошим учеником». Но на другой день всё пошло иначе: я забыл домашнее задание и болтал на уроке. Мне стало стыдно.
+
+Вечером я рассказал маме. Она сказала: «Кожа, люди ошибаются. Но признать ошибку и исправить её — это мужество». Эти слова запали мне в сердце.
+
+На другой день я вышел к доске и ответил тихо, но ясно. Класс затих. В тот миг я почувствовал, что меняюсь.
+
+(Это сокращённый демо-текст для библиотеки.)
+""",
     },
 ]
 
 DEFAULT_COVER = "covers/default-cover.jpg"
+
+I18N_COLUMNS = (
+    "title_en",
+    "title_ru",
+    "genre_en",
+    "genre_ru",
+    "content_en",
+    "content_ru",
+)
 
 
 def get_db() -> sqlite3.Connection:
@@ -166,24 +363,27 @@ def init_db() -> None:
         CREATE TABLE IF NOT EXISTS books (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             title TEXT NOT NULL,
+            title_en TEXT NOT NULL DEFAULT '',
+            title_ru TEXT NOT NULL DEFAULT '',
             author TEXT NOT NULL,
             year INTEGER NOT NULL,
             genre TEXT NOT NULL,
+            genre_en TEXT NOT NULL DEFAULT '',
+            genre_ru TEXT NOT NULL DEFAULT '',
             cover_url TEXT NOT NULL DEFAULT '',
             content TEXT NOT NULL DEFAULT '',
+            content_en TEXT NOT NULL DEFAULT '',
+            content_ru TEXT NOT NULL DEFAULT '',
             created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
         )
         """
     )
     cols = _column_names(db)
-    if "cover_url" not in cols:
-        db.execute(
-            "ALTER TABLE books ADD COLUMN cover_url TEXT NOT NULL DEFAULT ''"
-        )
-    if "content" not in cols:
-        db.execute(
-            "ALTER TABLE books ADD COLUMN content TEXT NOT NULL DEFAULT ''"
-        )
+    for col in ("cover_url", "content", *I18N_COLUMNS):
+        if col not in cols:
+            db.execute(
+                f"ALTER TABLE books ADD COLUMN {col} TEXT NOT NULL DEFAULT ''"
+            )
     db.commit()
 
 
@@ -193,42 +393,54 @@ def seed_books() -> None:
     if count == 0:
         db.executemany(
             """
-            INSERT INTO books (title, author, year, genre, cover_url, content)
-            VALUES (:title, :author, :year, :genre, :cover_url, :content)
+            INSERT INTO books (
+                title, title_en, title_ru, author, year,
+                genre, genre_en, genre_ru, cover_url,
+                content, content_en, content_ru
+            ) VALUES (
+                :title, :title_en, :title_ru, :author, :year,
+                :genre, :genre_en, :genre_ru, :cover_url,
+                :content, :content_en, :content_ru
+            )
             """,
             SAMPLE_BOOKS,
         )
         db.commit()
         return
 
-    # Ескі жазбаларға мұқаба/мәтін толтыру (атауы бойынша).
     for book in SAMPLE_BOOKS:
         row = db.execute(
-            "SELECT id, cover_url, content FROM books WHERE title = ?",
+            "SELECT * FROM books WHERE title = ?",
             (book["title"],),
         ).fetchone()
         if row is None:
             continue
-        cover = (row["cover_url"] or "").strip()
-        content = (row["content"] or "").strip()
-        if cover and content:
-            continue
-        db.execute(
-            """
-            UPDATE books
-            SET cover_url = CASE WHEN cover_url IS NULL OR cover_url = '' THEN ?
-                                 ELSE cover_url END,
-                content = CASE WHEN content IS NULL OR content = '' THEN ?
-                               ELSE content END
-            WHERE id = ?
-            """,
-            (book["cover_url"], book["content"], row["id"]),
-        )
+        updates = []
+        values = []
+        for key in (
+            "cover_url",
+            "content",
+            "title_en",
+            "title_ru",
+            "genre_en",
+            "genre_ru",
+            "content_en",
+            "content_ru",
+        ):
+            current = (row[key] if key in row.keys() else "") or ""
+            if not str(current).strip():
+                updates.append(f"{key} = ?")
+                values.append(book[key])
+        if updates:
+            values.append(row["id"])
+            db.execute(
+                f"UPDATE books SET {', '.join(updates)} WHERE id = ?",
+                values,
+            )
     db.commit()
 
 
 def resolve_cover_url(cover_url: str | None) -> str:
-    """Статикалық жолды толық URL-ге айналдыру; сыртқы URL қалдыру."""
     value = (cover_url or "").strip() or DEFAULT_COVER
     if value.startswith("http://") or value.startswith("https://"):
         return value
@@ -244,10 +456,12 @@ def get_all_books(query: str | None = None) -> list[sqlite3.Row]:
         return db.execute(
             """
             SELECT * FROM books
-            WHERE title LIKE ? OR author LIKE ? OR genre LIKE ?
+            WHERE title LIKE ? OR title_en LIKE ? OR title_ru LIKE ?
+               OR author LIKE ?
+               OR genre LIKE ? OR genre_en LIKE ? OR genre_ru LIKE ?
             ORDER BY title COLLATE NOCASE
             """,
-            (like, like, like),
+            (like, like, like, like, like, like, like),
         ).fetchall()
     return db.execute(
         "SELECT * FROM books ORDER BY title COLLATE NOCASE"
@@ -269,20 +483,38 @@ def create_book(
     genre: str,
     cover_url: str = "",
     content: str = "",
+    title_en: str = "",
+    title_ru: str = "",
+    genre_en: str = "",
+    genre_ru: str = "",
+    content_en: str = "",
+    content_ru: str = "",
 ) -> int:
     db = get_db()
     cover = (cover_url or "").strip() or DEFAULT_COVER
-    body = (content or "").strip() or (
-        f"{title}\n{author}\n\n"
-        "Бұл кітапқа әлі толық мәтін қосылмаған. "
-        "Кейінірек «Өңдеу» арқылы оқу мәтінін қосуға болады."
-    )
+    body = (content or "").strip() or f"{title}\n{author}\n\n"
     cur = db.execute(
         """
-        INSERT INTO books (title, author, year, genre, cover_url, content)
-        VALUES (?, ?, ?, ?, ?, ?)
+        INSERT INTO books (
+            title, title_en, title_ru, author, year,
+            genre, genre_en, genre_ru, cover_url,
+            content, content_en, content_ru
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """,
-        (title, author, year, genre, cover, body),
+        (
+            title,
+            (title_en or "").strip(),
+            (title_ru or "").strip(),
+            author,
+            year,
+            genre,
+            (genre_en or "").strip(),
+            (genre_ru or "").strip(),
+            cover,
+            body,
+            (content_en or "").strip(),
+            (content_ru or "").strip(),
+        ),
     )
     db.commit()
     return int(cur.lastrowid)
@@ -296,6 +528,12 @@ def update_book(
     genre: str,
     cover_url: str = "",
     content: str = "",
+    title_en: str = "",
+    title_ru: str = "",
+    genre_en: str = "",
+    genre_ru: str = "",
+    content_en: str = "",
+    content_ru: str = "",
 ) -> bool:
     db = get_db()
     existing = get_book(book_id)
@@ -305,12 +543,29 @@ def update_book(
     body = (content or "").strip() or existing["content"] or ""
     cur = db.execute(
         """
-        UPDATE books
-        SET title = ?, author = ?, year = ?, genre = ?,
-            cover_url = ?, content = ?
+        UPDATE books SET
+            title = ?, title_en = ?, title_ru = ?,
+            author = ?, year = ?,
+            genre = ?, genre_en = ?, genre_ru = ?,
+            cover_url = ?,
+            content = ?, content_en = ?, content_ru = ?
         WHERE id = ?
         """,
-        (title, author, year, genre, cover, body, book_id),
+        (
+            title,
+            (title_en or "").strip(),
+            (title_ru or "").strip(),
+            author,
+            year,
+            genre,
+            (genre_en or "").strip(),
+            (genre_ru or "").strip(),
+            cover,
+            body,
+            (content_en or "").strip(),
+            (content_ru or "").strip(),
+            book_id,
+        ),
     )
     db.commit()
     return cur.rowcount > 0

@@ -1,22 +1,20 @@
 {% extends "base.html" %}
 
 {% if mode == 'edit' %}
-  {% set page_title = 'Кітапты өңдеу' %}
-  {% set submit_label = 'Сақтау' %}
+  {% set page_title = t('edit_title') %}
+  {% set submit_label = t('submit_save') %}
 {% else %}
-  {% set page_title = 'Кітап қосу' %}
-  {% set submit_label = 'Қосу' %}
+  {% set page_title = t('add_title') %}
+  {% set submit_label = t('submit_add') %}
 {% endif %}
 
-{% block title %}{{ page_title }} · Электронды кітапхана{% endblock %}
+{% block title %}{{ page_title }} · {{ t('app_name') }}{% endblock %}
 
 {% block content %}
 <div class="row justify-content-center">
   <div class="col-lg-8 col-xl-7">
     <h1 class="h3 mb-1">{{ page_title }}</h1>
-    <p class="text-muted mb-4">
-      Атауы, авторы, жылы, жанры міндетті. Мұқаба мен мәтін — міндетті емес.
-    </p>
+    <p class="text-muted mb-4">{{ t('form_hint') }}</p>
 
     <form
       method="post"
@@ -29,82 +27,67 @@
       {% endif %}
     >
       <div class="mb-3">
-        <label for="title" class="form-label">Атауы</label>
-        <input
-          type="text"
-          class="form-control"
-          id="title"
-          name="title"
-          value="{{ form_data.title }}"
-          required
-          autofocus
-        >
+        <label for="title" class="form-label">{{ t('label_title') }}</label>
+        <input type="text" class="form-control" id="title" name="title" value="{{ form_data.title }}" required autofocus>
+      </div>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="title_en" class="form-label">{{ t('label_title_en') }}</label>
+          <input type="text" class="form-control" id="title_en" name="title_en" value="{{ form_data.title_en }}">
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="title_ru" class="form-label">{{ t('label_title_ru') }}</label>
+          <input type="text" class="form-control" id="title_ru" name="title_ru" value="{{ form_data.title_ru }}">
+        </div>
       </div>
 
       <div class="mb-3">
-        <label for="author" class="form-label">Авторы</label>
-        <input
-          type="text"
-          class="form-control"
-          id="author"
-          name="author"
-          value="{{ form_data.author }}"
-          required
-        >
+        <label for="author" class="form-label">{{ t('label_author') }}</label>
+        <input type="text" class="form-control" id="author" name="author" value="{{ form_data.author }}" required>
       </div>
 
       <div class="mb-3">
-        <label for="year" class="form-label">Жыл</label>
-        <input
-          type="number"
-          class="form-control"
-          id="year"
-          name="year"
-          value="{{ form_data.year }}"
-          step="1"
-          required
-        >
+        <label for="year" class="form-label">{{ t('label_year') }}</label>
+        <input type="number" class="form-control" id="year" name="year" value="{{ form_data.year }}" step="1" required>
       </div>
 
       <div class="mb-3">
-        <label for="genre" class="form-label">Жанр</label>
-        <input
-          type="text"
-          class="form-control"
-          id="genre"
-          name="genre"
-          value="{{ form_data.genre }}"
-          required
-        >
+        <label for="genre" class="form-label">{{ t('label_genre') }}</label>
+        <input type="text" class="form-control" id="genre" name="genre" value="{{ form_data.genre }}" required>
+      </div>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="genre_en" class="form-label">{{ t('label_genre_en') }}</label>
+          <input type="text" class="form-control" id="genre_en" name="genre_en" value="{{ form_data.genre_en }}">
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="genre_ru" class="form-label">{{ t('label_genre_ru') }}</label>
+          <input type="text" class="form-control" id="genre_ru" name="genre_ru" value="{{ form_data.genre_ru }}">
+        </div>
       </div>
 
       <div class="mb-3">
-        <label for="cover_url" class="form-label">Мұқаба (URL немесе static жолы)</label>
-        <input
-          type="text"
-          class="form-control"
-          id="cover_url"
-          name="cover_url"
-          value="{{ form_data.cover_url }}"
-          placeholder="covers/default-cover.jpg немесе https://…"
-        >
-        <div class="form-text">Бос қалдырсаңыз, әдепкі мұқаба қолданылады.</div>
+        <label for="cover_url" class="form-label">{{ t('label_cover') }}</label>
+        <input type="text" class="form-control" id="cover_url" name="cover_url" value="{{ form_data.cover_url }}" placeholder="covers/default-cover.jpg">
+        <div class="form-text">{{ t('cover_help') }}</div>
       </div>
 
+      <div class="mb-3">
+        <label for="content" class="form-label">{{ t('label_content') }}</label>
+        <textarea class="form-control" id="content" name="content" rows="6" placeholder="{{ t('content_placeholder') }}">{{ form_data.content }}</textarea>
+      </div>
+      <div class="mb-3">
+        <label for="content_en" class="form-label">{{ t('label_content_en') }}</label>
+        <textarea class="form-control" id="content_en" name="content_en" rows="5">{{ form_data.content_en }}</textarea>
+      </div>
       <div class="mb-4">
-        <label for="content" class="form-label">Оқу мәтіні</label>
-        <textarea
-          class="form-control"
-          id="content"
-          name="content"
-          rows="10"
-          placeholder="Кітап мәтінін немесе үзіндіні осында жазыңыз…"
-        >{{ form_data.content }}</textarea>
+        <label for="content_ru" class="form-label">{{ t('label_content_ru') }}</label>
+        <textarea class="form-control" id="content_ru" name="content_ru" rows="5">{{ form_data.content_ru }}</textarea>
       </div>
 
       <div class="d-flex flex-wrap gap-2">
         <button type="submit" class="btn btn-library">{{ submit_label }}</button>
-        <a href="{{ url_for('main.index') }}" class="btn btn-outline-secondary">Болдырмау</a>
+        <a href="{{ url_for('main.index') }}" class="btn btn-outline-secondary">{{ t('cancel') }}</a>
       </div>
     </form>
   </div>
